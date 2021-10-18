@@ -9,6 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['body', 'title'];
 //    public function getTitleAttribute($value) {
 //        return ucfirst($value) . '.';
 //    }
