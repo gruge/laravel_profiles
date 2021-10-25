@@ -30,7 +30,8 @@ class CreatePostRequest extends FormRequest
         }
         return [
             'title' => ['required', 'max:255', $rule],
-            'body' => ['required']
+            'body' => ['required'],
+            'image' => 'image'
         ];
     }
 }

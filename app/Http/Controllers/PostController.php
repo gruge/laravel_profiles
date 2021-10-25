@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\UserOwnsPost;
 use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
+use Facade\FlareClient\Http\Exceptions\NotFound;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(UserOwnsPost::class)->except(['index', 'create', 'store']);
+    }
 
     /**
      * Display a listing of the resource.
@@ -16,7 +24,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate();
+        $posts = Auth::user()->posts()->paginate();
         return response()->view('posts.index', compact('posts'));
     }
 
@@ -39,6 +47,7 @@ class PostController extends Controller
     public function store(CreatePostRequest $request)
     {
         $post = new Post($request->validated());
+        $post->user_id = Auth::user()->id;
 //        $post->title = $request->input('title');
 //        $post->body = $request->input('body');
         $post->save();
