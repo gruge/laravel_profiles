@@ -19,6 +19,7 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/posts', [HomeController::class, 'posts']);
 Route::get('/posts/{post}', [HomeController::class, 'post'])->whereNumber('post')->name('post');
 Route::get('/tag/{tag}', [HomeController::class, 'tag']);
+Route::get('/user/{user}', [HomeController::class, 'user']);
 
 //Route::get('/admin/posts', [PostController::class, 'index']);
 //Route::get('/admin/posts/create', [PostController::class, 'create']);

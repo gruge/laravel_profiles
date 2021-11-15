@@ -1,9 +1,17 @@
 @extends('layout')
-@section('title', 'Posts')
+@section('title', $user->name)
 @section('content')
-    {{$posts->links()}}
+    <a class="btn btn-primary" href="{{url()->previous()}}">Back</a>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ $user->name }}</h5>
+            <p class="card-text">Email: {{ $user->email }}</p>
+            <p class="card-text">Count of posts: {{ $user->posts()->count() }}</p>
+            <p class="card-text">Count of comments: {{ $user->comments()->count() }}</p>
+        </div>
+    </div>
     <div class="row row-cols-4">
-        @foreach($posts as $post)
+        @foreach($user->posts()->paginate() as $post)
             <div class="col">
                 <div class="card mt-3">
                     @if($post->images->count() > 1)
@@ -13,9 +21,6 @@
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $post->title }}</h5>
-                        <p class="card-text text-muted">
-                            <a href="/user/{{ $post->user->id }}">{{ $post->user->name }}</a>
-                        </p>
                         <p class="card-text text-muted">{{ $post->created_at->diffForHumans() }}</p>
                         <p class="card-text text-muted"><b>Comments:</b> {{ $post->comments()->count() }}</p>
                         <p class="card-text text-muted"><b>Likes:</b> {{ $post->likes()->count() }}</p>
@@ -38,5 +43,4 @@
             </div>
         @endforeach
     </div>
-    {{$posts->links()}}
 @endsection
