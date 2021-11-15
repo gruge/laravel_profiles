@@ -17,6 +17,29 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comments() {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function images() {
+        return $this->hasMany(Image::class);
+    }
+
+    public function likes() {
+        return $this->hasMany(Like::class);
+    }
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function getAuthHasLikedAttribute() {
+        if(auth()->check()) {
+            return $this->likes()->where('user_id', auth()->user()->id)->exists();
+        }
+        return false;
+    }
+
     public function setImageAttribute(UploadedFile $image) {
         $path = $image->store('public');
         $this->image_path = Storage::url($path);
@@ -32,8 +55,7 @@ class Post extends Model
 
     protected static function booted() {
         static::deleted(function ($post) {
-            dd($post->img_path);
-//            File::deleted();
+            File::delete(public_path($post->image_path));
         });
     }
 }
