@@ -26,7 +26,7 @@
                             @endif
                         </a>
                         <p class="card-text text-muted">
-                            @foreach($post-$tags as $tag)
+                            @foreach($post->tags as $tag)
                                 <a href="/tag/{{$tag->id}}">{{$tag->name}}</a>
                             @endforeach
                         </p>

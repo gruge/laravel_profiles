@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -32,5 +33,10 @@ class HomeController extends Controller
     {
         //$post = Post::findOrFail($id);
         return response()->view('post', compact('post'));
+    }
+
+    public function tag(Tag $tag) {
+        $posts = $tag->posts()->paginate();
+        return response()->view('posts', compact('posts'));
     }
 }
